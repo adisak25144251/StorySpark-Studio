@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowRight, Wand2, ShieldCheck, Thermometer, Globe2 } from 'lucide-react';
+import { Sparkles, ArrowRight, Wand2, ShieldCheck, Thermometer, Globe2, Clapperboard } from 'lucide-react';
 import { Button, Card, Badge, Input } from './UIComponents';
 import { StoryMode, StoryProject, SafetyLevel, PromptVersion, StoryBibleSeed, LanguageMode } from '../types';
 import * as GeminiService from '../geminiService';
@@ -100,14 +100,16 @@ export const StoryWizard: React.FC<WizardProps> = ({ onComplete, initialPrompt }
               { id: StoryMode.PICTURE_BOOK, label: "Picture Book", icon: "🎨" },
               { id: StoryMode.NOVEL, label: "Short Novel", icon: "📖" },
               { id: StoryMode.COMIC, label: "Comic / Manga", icon: "💬" },
-              { id: StoryMode.CINEMATIC_REALISM, label: "Cinematic Realism", icon: "🎬" },
+              { id: StoryMode.CINEMATIC_REALISM, label: "Cinematic Realism", icon: <Clapperboard className="w-12 h-12" /> },
             ].map((m) => (
               <Card 
                 key={m.id} 
                 className={`p-8 cursor-pointer transition-all hover:scale-105 border ${mode === m.id ? 'border-neon-blue bg-neon-blue/10 shadow-[0_0_20px_rgba(0,243,255,0.3)]' : 'border-white/10 hover:border-white/30'}`}
               >
                 <div onClick={() => setMode(m.id as StoryMode)} className="text-center">
-                    <div className="text-5xl mb-4 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">{m.icon}</div>
+                    <div className="text-5xl mb-4 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] flex justify-center">
+                        {typeof m.icon === 'string' ? m.icon : m.icon}
+                    </div>
                     <div className={`font-bold font-cyber tracking-widest ${mode === m.id ? 'text-neon-blue' : 'text-white'}`}>{m.label}</div>
                     {m.id === StoryMode.CINEMATIC_REALISM && <div className="text-[10px] mt-2 text-neon-pink">Photoreal / 8K</div>}
                 </div>
