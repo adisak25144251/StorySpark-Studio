@@ -242,13 +242,6 @@ const App: React.FC = () => {
                             >
                                 <Sparkles className="w-5 h-5 mr-2 animate-pulse" /> INITIALIZE NEW STORY
                             </Button>
-                            <Button 
-                                variant="secondary" 
-                                onClick={() => setView(AppView.IDEA)}
-                                className=""
-                            >
-                                <Lightbulb className="w-5 h-5 mr-2" /> IDEA LAB
-                            </Button>
                         </div>
                     </div>
 
