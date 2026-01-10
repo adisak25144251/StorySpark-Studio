@@ -226,9 +226,17 @@ const App: React.FC = () => {
                             UNLEASH YOUR<br/>
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-pink">DIGITAL IMAGINATION</span>
                         </h2>
-                        <p className="text-lg text-blue-200/70 max-w-2xl mx-auto font-light">
+                        <p className="text-lg text-blue-200/70 max-w-2xl mx-auto font-light mb-8">
                             Craft professional narratives, comics, and visual novels using our advanced AI neural engine.
                         </p>
+
+                        <Button 
+                            variant="magic" 
+                            onClick={() => { setWizardInitPrompt(""); setView(AppView.WIZARD); }}
+                            className="shadow-[0_0_30px_rgba(188,19,254,0.4)] hover:shadow-[0_0_50px_rgba(188,19,254,0.6)]"
+                        >
+                            <Sparkles className="w-5 h-5 mr-2 animate-pulse" /> INITIALIZE NEW STORY
+                        </Button>
                     </div>
 
                     {/* Trending Section */}
