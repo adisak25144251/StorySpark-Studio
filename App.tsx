@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { Layout as LayoutIcon, PenTool, BookOpen, Lightbulb, Menu, History, Library as LibraryIcon, Flame, Zap, Shield, Heart, Users, Gamepad2, GraduationCap, Palette, ShieldCheck, ArrowRight, Sparkles, Lock } from 'lucide-react';
+import { Layout as LayoutIcon, PenTool, BookOpen, Lightbulb, Menu, History, Library as LibraryIcon, Flame, Zap, Shield, Heart, Users, Gamepad2, GraduationCap, Palette, ShieldCheck, ArrowRight, Sparkles, Lock, Book } from 'lucide-react';
 import { AppView, StoryProject, StoryMode, StoryBibleSeed, LanguageMode, TrendItem, FeatureRecommendation } from './types';
 import { StoryWizard } from './components/StoryWizard';
 import { StudioEditor } from './components/StudioEditor';
 import { StoryBibleView } from './components/StoryBible';
 import { PromptLab } from './components/PromptLab';
 import { Library } from './components/Library';
+import { StorySparkGuide } from './components/StorySparkGuide';
 import { RECOMMENDATIONS } from './constants';
 import * as GeminiService from './geminiService';
 import { Badge, Button } from './components/UIComponents';
@@ -185,6 +186,17 @@ const App: React.FC = () => {
                  ))}
              </nav>
              
+             {/* Guide / Manual Link */}
+             <div className="mt-4 pt-4 border-t border-white/10">
+                 <button 
+                    onClick={() => setView(AppView.GUIDE)}
+                    className={`w-full flex items-center p-3 rounded-xl transition-all duration-300 group ${view === AppView.GUIDE ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white hover:bg-white/5'}`}
+                 >
+                     <Book className="w-5 h-5 lg:mr-3" />
+                     <span className="hidden lg:inline font-cyber tracking-wide text-sm">MANUAL / GUIDE</span>
+                 </button>
+             </div>
+             
              <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-neon-purple/20 to-transparent border border-neon-purple/30 hidden lg:block relative overflow-hidden group">
                  <div className="absolute inset-0 bg-neon-purple/10 blur-xl group-hover:bg-neon-purple/20 transition-all"></div>
                  <div className="relative z-10">
@@ -328,6 +340,10 @@ const App: React.FC = () => {
                     project={project} 
                     onNavigate={setView}
                 />
+            )}
+
+            {view === AppView.GUIDE && (
+                <StorySparkGuide />
             )}
 
           </div>

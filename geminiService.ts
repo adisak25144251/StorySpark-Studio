@@ -643,14 +643,14 @@ export const generateTrendAnalysis = async (): Promise<TrendAnalysis> => {
     };
 
     const systemInstruction = `You are the "Trend Analyst – Kids/Teens Story Platform".
-    Role: Analyze internal metrics to identify 9 trending story themes that are short, fast to read, and safe.
+    Role: Analyze internal metrics to identify 15 trending story themes that are short, fast to read, and safe.
     
     Input Metrics (Simulated): ${JSON.stringify(MOCK_METRICS)}
     Safety Policy: STRICT (Kids/Teens Safe). No explicit romance, violence, or horror.
 
     Task:
-    1. Identify 9 distinct trends based on high engagement potential.
-    2. Rank them 1-9.
+    1. Identify 15 distinct trends based on high engagement potential.
+    2. Rank them 1-15.
     3. Explain "Why Popular" (e.g. "Quick read", "Relatable").
     4. Provide a "Prompt Starter" for users to immediately create this story.
     5. Output Language: THAI (ภาษาไทย) for all user-facing strings (title, why_popular, prompt_starter).
@@ -744,6 +744,54 @@ export const generateTrendAnalysis = async (): Promise<TrendAnalysis> => {
                 why_popular: "ความเชื่อท้องถิ่นที่นำมาเล่าใหม่ให้ไม่น่ากลัวแต่สนุก",
                 recommended_for_age: ["9-12", "13+"],
                 prompt_starter: "ผีกระหังที่บินไม่ได้เพราะปวดหลัง ต้องมาขอให้เด็กๆ ช่วย",
+                safety_note: "Safe"
+            },
+            {
+                rank: 10,
+                title: "นักเดินทางข้ามเวลาตัวจิ๋ว",
+                why_popular: "เรียนรู้ประวัติศาสตร์ผ่านการผจญภัยที่สนุกสนาน",
+                recommended_for_age: ["9-12", "13+"],
+                prompt_starter: "นาฬิกาของคุณปู่พาเด็กๆ ย้อนเวลาไปพบกับบุคคลสำคัญในอดีต",
+                safety_note: "Safe"
+            },
+            {
+                rank: 11,
+                title: "อาณาจักรใต้สมุทร",
+                why_popular: "สำรวจโลกใต้น้ำที่เต็มไปด้วยสีสันและสัตว์แปลกตา",
+                recommended_for_age: ["6-8", "9-12"],
+                prompt_starter: "เงือกน้อยพาเด็กๆ ไปชมเมืองปะการังที่ซ่อนอยู่ใต้ทะเลลึก",
+                safety_note: "Safe"
+            },
+            {
+                rank: 12,
+                title: "วงดนตรีโรงเรียนปีศาจ",
+                why_popular: "ความสนุกสนานของเสียงดนตรีและมิตรภาพที่แตกต่าง",
+                recommended_for_age: ["9-12", "13+"],
+                prompt_starter: "เด็กมนุษย์หลงเข้าไปเป็นมือกลองในวงดนตรีของเหล่ามอนสเตอร์",
+                safety_note: "Safe"
+            },
+            {
+                rank: 13,
+                title: "หุ่นยนต์มีหัวใจ",
+                why_popular: "เรื่องราวซึ้งกินใจเกี่ยวกับมิตรภาพระหว่างเด็กและหุ่นยนต์",
+                recommended_for_age: ["6-8", "9-12"],
+                prompt_starter: "หุ่นยนต์พี่เลี้ยงเริ่มมีความรู้สึกเมื่อต้องดูแลเด็กกำพร้า",
+                safety_note: "Safe"
+            },
+            {
+                rank: 14,
+                title: "กีฬาสีมหัศจรรย์",
+                why_popular: "การแข่งขันที่เน้นความสามัคคีและพลังวิเศษ",
+                recommended_for_age: ["6-8", "9-12"],
+                prompt_starter: "งานกีฬาสีที่นักเรียนใช้เวทมนตร์ในการแข่งวิ่งและว่ายน้ำ",
+                safety_note: "Safe"
+            },
+            {
+                rank: 15,
+                title: "ความลับของผู้พิทักษ์ป่า",
+                why_popular: "ปลูกจิตสำนึกรักษ์ธรรมชาติผ่านเรื่องราวลึกลับ",
+                recommended_for_age: ["9-12", "13+"],
+                prompt_starter: "เด็กเมืองกรุงพบกับภูตจิ๋วที่ทำหน้าที่ปกป้องป่าหลังบ้าน",
                 safety_note: "Safe"
             }
         ],

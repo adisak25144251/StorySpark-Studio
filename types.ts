@@ -18,7 +18,8 @@ export enum AppView {
   STUDIO = 'STUDIO',
   BIBLE = 'BIBLE',
   PROMPT_LAB = 'PROMPT_LAB',
-  LIBRARY = 'LIBRARY'
+  LIBRARY = 'LIBRARY',
+  GUIDE = 'GUIDE'
 }
 
 export enum SafetyLevel {
