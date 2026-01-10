@@ -2,8 +2,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StoryProject, Scene, LanguageMode, AppView } from '../types';
 import { Card, Button, Badge } from './UIComponents';
-import { RefreshCw, Image as ImageIcon, ChevronLeft, ChevronRight, Save, Eye, ShieldCheck, CheckCircle, Languages, Mic, Music, PlayCircle, BookOpen, Volume2, Activity, Headphones, PauseCircle, Maximize2, PenTool, Lock, Library as LibraryIcon, Sparkles, Download, FileJson, X, AlertTriangle } from 'lucide-react';
+import { RefreshCw, Image as ImageIcon, ChevronLeft, ChevronRight, Save, Eye, ShieldCheck, CheckCircle, Languages, Mic, Music, PlayCircle, BookOpen, Volume2, Activity, Headphones, PauseCircle, Maximize2, PenTool, Lock, Library as LibraryIcon, Sparkles, Download, FileJson, X, AlertTriangle, Wand2 } from 'lucide-react';
 import * as GeminiService from '../geminiService';
+import { PhotoCompositor } from './PhotoCompositor';
 
 interface StudioProps {
   project: StoryProject | null;
@@ -27,6 +28,7 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
   const audioCtxRef = useRef<AudioContext | null>(null);
   const [lastReviewIssues, setLastReviewIssues] = useState<string[]>([]);
   const [showQAReport, setShowQAReport] = useState(false);
+  const [showPhotoEditor, setShowPhotoEditor] = useState(false);
 
   // Safety check for null project
   const scene = project ? project.scenes[currentSceneIdx] : null;
@@ -221,6 +223,16 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
 
   return (
     <div className="flex flex-col h-full bg-transparent relative">
+      {/* Photo Editor Overlay */}
+      {showPhotoEditor && scene && (
+        <PhotoCompositor 
+            imageUrl={scene.imageUrl || ''}
+            text={scene.content}
+            emotion={scene.emotion || 'Neutral'}
+            onClose={() => setShowPhotoEditor(false)}
+        />
+      )}
+
       {/* Toolbar - Glass Bar */}
       <div className="glass-panel border-b border-white/10 px-6 py-3 flex items-center justify-between shadow-neon-blue/10 flex-shrink-0 z-10 m-4 rounded-xl">
         <div className="flex items-center gap-4">
@@ -486,7 +498,12 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
                   </div>
               )}
 
-              <div className="absolute bottom-4 left-4 right-4 flex justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute bottom-4 left-4 right-4 flex justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 gap-2">
+                 {scene.imageUrl && (
+                     <Button variant="secondary" onClick={() => setShowPhotoEditor(true)} className="scale-90 hover:scale-100 text-sm py-2 px-6 border-white/30 bg-black/60 backdrop-blur-md">
+                        <Wand2 className="w-4 h-4 mr-2" /> EDIT & SHARE
+                     </Button>
+                 )}
                  <Button variant="magic" onClick={handleGenerateImage} isLoading={isGeneratingImg} className="shadow-neon-pink scale-90 hover:scale-100 text-sm py-2 px-6">
                     {scene.imageUrl ? <><RefreshCw className="w-4 h-4 mr-2"/> REGENERATE</> : <><ImageIcon className="w-4 h-4 mr-2"/> GENERATE</>}
                  </Button>

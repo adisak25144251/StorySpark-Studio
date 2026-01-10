@@ -19,6 +19,8 @@ export enum AppView {
   STUDIO = 'STUDIO',
   BIBLE = 'BIBLE',
   PROMPT_LAB = 'PROMPT_LAB',
+  MAGIC_EDITOR = 'MAGIC_EDITOR',
+  IDEA = 'IDEA', // New View
   LIBRARY = 'LIBRARY',
   GUIDE = 'GUIDE'
 }
@@ -156,7 +158,8 @@ export interface Scene {
   altText?: string;
   imageUrl?: string; 
   audioScript?: CinematicAudioScript;
-  soundDesign?: UnitSoundDesign; // New field
+  soundDesign?: UnitSoundDesign; 
+  emotion?: string; // e.g. "Happy", "Sad", "Tense"
   isGeneratingImage: boolean;
 }
 
@@ -183,6 +186,28 @@ export interface StoryProject {
   exportHints?: ExportHints;
   createdAt: number;
   updatedAt: number;
+}
+
+// --- VIRAL IDEA TYPES ---
+export interface ViralScene {
+  scene_title: string;
+  setting: string;
+  action: string;
+  emotion: string;
+  cliffhanger_tag: string;
+  image_prompt: string;
+}
+
+export interface ViralStory {
+  title: string;
+  social_hook: string;
+  opening_hook_3_lines: string;
+  world_rule: string;
+  characters: { name: string; role: string; wound: string; signature_prop: string }[];
+  story_text: string;
+  storyboard: ViralScene[];
+  twist_clues: string[];
+  final_quote: string;
 }
 
 // --- PRODUCT STRATEGY TYPES ---

@@ -1,13 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
-import { Layout as LayoutIcon, PenTool, BookOpen, Lightbulb, Menu, History, Library as LibraryIcon, Flame, Zap, Shield, Heart, Users, Gamepad2, GraduationCap, Palette, ShieldCheck, ArrowRight, Sparkles, Lock, Book } from 'lucide-react';
+import { Layout as LayoutIcon, PenTool, BookOpen, Lightbulb, Menu, History, Library as LibraryIcon, Flame, Zap, Shield, Heart, Users, Gamepad2, GraduationCap, Palette, ShieldCheck, ArrowRight, Sparkles, Lock, Book, Wand2 } from 'lucide-react';
 import { AppView, StoryProject, StoryMode, StoryBibleSeed, LanguageMode, TrendItem, FeatureRecommendation } from './types';
 import { StoryWizard } from './components/StoryWizard';
 import { StudioEditor } from './components/StudioEditor';
 import { StoryBibleView } from './components/StoryBible';
 import { PromptLab } from './components/PromptLab';
+import { MagicEditorView } from './components/MagicEditorView';
 import { Library } from './components/Library';
 import { StorySparkGuide } from './components/StorySparkGuide';
+import { IdeaGenerator } from './components/IdeaGenerator';
 import { RECOMMENDATIONS } from './constants';
 import * as GeminiService from './geminiService';
 import { Badge, Button } from './components/UIComponents';
@@ -154,7 +156,8 @@ const App: React.FC = () => {
              <nav className="space-y-3 flex-1">
                  {[
                    { id: AppView.HOME, icon: LayoutIcon, label: 'Dashboard' },
-                   { id: AppView.LIBRARY, icon: LibraryIcon, label: 'Library' }
+                   { id: AppView.LIBRARY, icon: LibraryIcon, label: 'Library' },
+                   { id: AppView.IDEA, icon: Lightbulb, label: 'Idea Lab' } // Added Idea Lab
                  ].map(item => (
                    <button 
                     key={item.id}
@@ -173,6 +176,7 @@ const App: React.FC = () => {
                  {[
                    { id: AppView.STUDIO, icon: PenTool, label: 'Holo-Studio' },
                    { id: AppView.BIBLE, icon: BookOpen, label: 'Story Bible' },
+                   { id: AppView.MAGIC_EDITOR, icon: Wand2, label: 'Magic Editor' },
                    { id: AppView.PROMPT_LAB, icon: History, label: 'Prompt Lab' }
                  ].map(item => (
                    <button 
@@ -203,7 +207,7 @@ const App: React.FC = () => {
                     <div className="flex items-center text-neon-purple font-bold mb-2 font-cyber text-xs">
                         <Lightbulb className="w-3 h-3 mr-2" /> PRO TIP
                     </div>
-                    <p className="text-xs text-purple-200 leading-relaxed font-mono">Use the Prompt Lab to mutate your ideas into golden variants.</p>
+                    <p className="text-xs text-purple-200 leading-relaxed font-mono">Use the Idea Lab to break writer's block instantly.</p>
                  </div>
              </div>
          </div>
@@ -230,13 +234,22 @@ const App: React.FC = () => {
                             Craft professional narratives, comics, and visual novels using our advanced AI neural engine.
                         </p>
 
-                        <Button 
-                            variant="magic" 
-                            onClick={() => { setWizardInitPrompt(""); setView(AppView.WIZARD); }}
-                            className="shadow-[0_0_30px_rgba(188,19,254,0.4)] hover:shadow-[0_0_50px_rgba(188,19,254,0.6)]"
-                        >
-                            <Sparkles className="w-5 h-5 mr-2 animate-pulse" /> INITIALIZE NEW STORY
-                        </Button>
+                        <div className="flex justify-center gap-4">
+                            <Button 
+                                variant="magic" 
+                                onClick={() => { setWizardInitPrompt(""); setView(AppView.WIZARD); }}
+                                className="shadow-[0_0_30px_rgba(188,19,254,0.4)] hover:shadow-[0_0_50px_rgba(188,19,254,0.6)]"
+                            >
+                                <Sparkles className="w-5 h-5 mr-2 animate-pulse" /> INITIALIZE NEW STORY
+                            </Button>
+                            <Button 
+                                variant="secondary" 
+                                onClick={() => setView(AppView.IDEA)}
+                                className=""
+                            >
+                                <Lightbulb className="w-5 h-5 mr-2" /> IDEA LAB
+                            </Button>
+                        </div>
                     </div>
 
                     {/* Trending Section */}
@@ -326,6 +339,10 @@ const App: React.FC = () => {
                 <StoryWizard onComplete={handleWizardComplete} initialPrompt={wizardInitPrompt} />
             )}
 
+            {view === AppView.IDEA && (
+                <IdeaGenerator />
+            )}
+
             {/* Direct access components with null safe checks */}
             {view === AppView.STUDIO && (
                 <StudioEditor 
@@ -333,6 +350,13 @@ const App: React.FC = () => {
                     onUpdateProject={handleUpdateProject} 
                     onNavigate={setView} 
                     onCreateNew={() => { setWizardInitPrompt(""); setView(AppView.WIZARD); }}
+                />
+            )}
+
+            {view === AppView.MAGIC_EDITOR && (
+                <MagicEditorView 
+                    project={project} 
+                    onNavigate={setView}
                 />
             )}
 

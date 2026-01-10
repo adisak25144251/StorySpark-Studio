@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { StoryBible, Scene, StoryMode, SafetyLevel, StoryBibleSeed, ExportHints, CinematicAudioScript, LanguageMode, UnitSoundDesign, TrendAnalysis, ProductStrategy } from './types';
+import { StoryBible, Scene, StoryMode, SafetyLevel, StoryBibleSeed, ExportHints, CinematicAudioScript, LanguageMode, UnitSoundDesign, TrendAnalysis, ProductStrategy, ViralStory } from './types';
 import { MODEL_TEXT_FAST, MODEL_TEXT_CREATIVE, MODEL_IMAGE, RECOMMENDATIONS } from './constants';
 
 const getClient = () => {
@@ -298,7 +298,7 @@ export const generateStoryDraft = async (
         "title": "string (Thai)",
         "text": "string (Thai narrative)",
         "dialogue": ["string (Thai dialogue lines)"],
-        "emotion_beat": "string"
+        "emotion_beat": "string (e.g. Happy, Sad, Tense, Action, Scary)"
       }
     ]
   }`;
@@ -329,7 +329,7 @@ export const generateStoryDraft = async (
             "title": "string (Thai)",
             "text": "string (Markdown formatted: Scene Bible + Shot List + Narrative)",
             "dialogue": ["string (Thai dialogue lines)"],
-            "emotion_beat": "string"
+            "emotion_beat": "string (e.g. Dramatic, Melancholy, Intense, Peaceful)"
           }
         ]
       }`;
@@ -351,6 +351,7 @@ export const generateStoryDraft = async (
     order: index + 1,
     content: `## ${item.title}\n\n${item.text}\n\n${(item.dialogue || []).map((d:string) => `- ${d}`).join('\n')}`,
     imagePrompt: "", // Will be filled by the Visual Director
+    emotion: item.emotion_beat || "Neutral",
     isGeneratingImage: false
   }));
 };
@@ -998,6 +999,96 @@ export const generateProductStrategy = async (): Promise<ProductStrategy> => {
     }
     // Return hardcoded recommendations from constants as fallback
     return { top_features: RECOMMENDATIONS };
+  }
+};
+
+
+// 12. VIRAL IDEA GENERATOR
+export const generateViralIdea = async (
+  audience: string,
+  tone: string,
+  location: string,
+  magicItem: string,
+  rule: string,
+  cost: string,
+  wound: string,
+  peak: string
+): Promise<ViralStory> => {
+
+  const systemInstruction = `You are "Viral Short Story Showrunner + Screenwriter + Storyboard Director + Cinematic Art Director (World-Class)".
+
+  Mission: Create a professional short drama story WITH illustration guidance that can go viral among kids/teens.
+  
+  Hard Rules (must comply):
+  1) First 3 lines must “hook” using: a strange everyday object, a clear strange rule, and a painful cost.
+  2) World rule must be explained clearly in ONE paragraph (magic, prohibition, deadline).
+  3) Every 1–2 pages must end with a micro cliffhanger ("but...", "?").
+  4) Main character must have an inner wound teens relate to.
+  5) Include realistic small behaviors that mirror the reader’s life.
+  6) One strong peak moment (Truth reveal / Sacrifice / No-right-choice / Fixing makes it worse).
+  7) Twist must be “fair”: plant 2 subtle clues earlier.
+  8) Magic cost must hurt (memory/self/relationship/etc.).
+  9) Language: Smooth Thai, short paragraphs, vivid words.
+  10) Moral exists but NEVER preach; show through actions.
+  11) Ending: bittersweet OR circular OR passing-the-torch.
+  12) Follow viral plot skeleton: Hook → try/use → side effect grows → peak decision → twist → closing.
+
+  STYLE LOCK (use in every image prompt):
+  "Photoreal cinematic still frame, Japanese small-town slice-of-life realism, natural skin pores, subtle imperfections, realistic fabric weave, physically accurate lighting, global illumination, soft film grain, muted color grading, shallow depth of field, full-frame look, documentary candid vibe, no CGI look, no anime, no plastic skin."
+
+  NEGATIVE PROMPT:
+  "cartoon, anime, CGI, plastic skin, over-smoothing, extra fingers, deformed hands, warped eyes, text artifacts, watermark, logo, oversharpen, unreal shadows"
+
+  Output Format (JSON Only):
+  {
+    "title": "string (Thai + 1-line social hook)",
+    "social_hook": "string (Thai)",
+    "opening_hook_3_lines": "string (Thai, exactly 3 lines)",
+    "world_rule": "string (Thai, one paragraph)",
+    "characters": [
+      { "name": "string", "role": "string", "wound": "string", "signature_prop": "string" }
+    ],
+    "story_text": "string (Full Thai story 800-1500 words with micro cliffhangers)",
+    "storyboard": [
+      {
+        "scene_title": "string",
+        "setting": "string",
+        "action": "string",
+        "emotion": "string",
+        "cliffhanger_tag": "string (e.g. But then...)",
+        "image_prompt": "string (English, includes STYLE LOCK)"
+      }
+    ],
+    "twist_clues": ["string (Clue 1)", "string (Clue 2)"],
+    "final_quote": "string (Thai)"
+  }`;
+
+  const inputContext = `
+  Target: ${audience}
+  Tone: ${tone}
+  Location: ${location} (Japan)
+  Magic Item: ${magicItem}
+  Rule: ${rule}
+  Cost: ${cost}
+  Inner Wound: ${wound}
+  Peak Moment: ${peak}
+  `;
+
+  try {
+    const response = await generateContentSafe({
+        model: MODEL_TEXT_CREATIVE, // Use Creative model for better storytelling
+        contents: `Generate Viral Story Idea based on: ${inputContext}`,
+        config: {
+          responseMimeType: "application/json",
+          systemInstruction: systemInstruction,
+          thinkingConfig: { thinkingBudget: 4000 } // Enable thinking for better plot structure
+        }
+    });
+
+    return cleanAndParseJSON(response.text);
+  } catch (e) {
+    console.error("Viral Idea Gen Failed", e);
+    throw e;
   }
 };
 
