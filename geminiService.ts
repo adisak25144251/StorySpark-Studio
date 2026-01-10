@@ -74,7 +74,7 @@ export const refinePrompt = async (
   safety: SafetyLevel
 ): Promise<{ refinedPrompt: string; title: string; score: number; summary: string; seed: StoryBibleSeed }> => {
   
-  const systemInstruction = `You are the "World-Class Prompt Refiner" (Kids/Teens Safe).
+  let systemInstruction = `You are the "World-Class Prompt Refiner" (Kids/Teens Safe).
   Role: Accept a user's Idea Prompt and transform it into a precise, actionable, and safe "Production Prompt".
   
   Context:
@@ -107,6 +107,37 @@ export const refinePrompt = async (
     },
     "auto_fix_notes": ["string (Thai)"]
   }`;
+
+  if (mode === StoryMode.CINEMATIC_REALISM) {
+      systemInstruction = `You are the "Cinematic Realism Director & Production Designer (World-Class)".
+      Role: Transform the user's idea into a Production Prompt for a Photoreal/Cinematic Realism project.
+
+      Rules:
+      1. NO VAGUE DESCRIPTIONS. You must define Physics, Materials, Weather, Time, and Light.
+      2. TONE: Photoreal, Cinematic, Documentary Realism. Avoid fantasy/cartoonish elements unless specified as grounded sci-fi.
+      3. CHARACTER: Define Age, Race, Body Type, Skin Texture, Marks, Wardrobe.
+      4. SCENE: Define Location, Weather, Key Light Source, Smell/Sound, 3 Key Props.
+      5. SAFETY: ${SAFETY_PROMPT(safety)}.
+
+      Output Language: Title/Summary in Thai. Production Prompt in English.
+      
+      Output Format (JSON Only):
+      {
+        "quality_score_0_100": number,
+        "detected_intent": "string",
+        "title": "string (Thai)",
+        "production_prompt": "string (Detailed English prompt focusing on cinematic realism, lighting, camera lenses, and physical materials)",
+        "story_bible_seed": {
+          "target_age": "string",
+          "genre": "Cinematic Realism",
+          "tone": "Photorealistic",
+          "main_characters": [{ "name": "string", "role": "string", "traits": "string", "visual_signature": "string (Detailed physical description)" }],
+          "locations": [{ "name": "string", "description": "string (Atmospheric description)" }],
+          "world_rules": ["Physics-based realism", "Natural lighting", "Continuity of props"]
+        },
+        "auto_fix_notes": ["string (Thai)"]
+      }`;
+  }
 
   try {
     const response = await generateContentSafe({
@@ -142,10 +173,11 @@ export const refinePrompt = async (
 export const generateStoryBible = async (
   refinedPrompt: string, 
   seed: StoryBibleSeed, 
-  safety: SafetyLevel
+  safety: SafetyLevel,
+  mode: StoryMode = StoryMode.PICTURE_BOOK
 ): Promise<StoryBible> => {
   
-  const systemInstruction = `You are the "Story Bible Builder – Continuity Director".
+  let systemInstruction = `You are the "Story Bible Builder – Continuity Director".
   Your goal: Create a comprehensive Story Bible to ensure narrative and visual consistency for a ${seed.target_age} year old's story.
   Input: Production Prompt + Bible Seed.
   Safety: ${SAFETY_PROMPT(safety)}
@@ -175,6 +207,43 @@ export const generateStoryBible = async (
     },
     "glossary": { "ThaiName": "EnglishName" }
   }`;
+
+  if (mode === StoryMode.CINEMATIC_REALISM) {
+      systemInstruction = `You are the "Cinematic Realism Director & Production Designer".
+      Goal: Create a Photoreal Character Bible.
+      
+      For Characters, you MUST provide:
+      A) Identity Card: Name, Age, Height, Weight.
+      B) Face & Body Details: Face shape, brows, lips, eye color, skin texture, moles/scars, posture.
+      C) Wardrobe: Specific clothing items, brands/materials, shoe type.
+      D) Emotion & Acting Notes: Facial expressions, habits.
+      E) Inner Wound + Desire + Fear.
+      F) Signature Props (3 items).
+      G) Continuity Locks (8-12 immutable traits).
+      H) Negative/Avoid List (uncanny, plastic skin).
+
+      Output Format (JSON):
+      {
+        "bible": {
+           "characters": [{ 
+              "name": "string", 
+              "role": "string", 
+              "description": "string (Thai - Include Identity, Face/Body, Wardrobe, Inner Wound, Props in text)", 
+              "visualTrait": "string (English - Highly detailed for Photoreal generation)", 
+              "personality": "string (Thai - Acting notes)" 
+           }],
+           "locations": [{ "name": "string", "description": "string (Thai)", "visualStyle": "string (English)" }],
+           "plot_spine": { "start": "string", "middle": "string", "end": "string", "theme": "string", "lesson": "string" },
+           "style_guide": { "art_style": "Photoreal Cinematic", "palette": "string", "lighting": "Physically accurate" }
+        },
+        "consistency_tokens": {
+           "character_tokens": { "CharacterName": "string" },
+           "location_tokens": { "LocationName": "string" },
+           "global_style_tokens": ["string", "string"]
+        },
+        "glossary": { "ThaiName": "EnglishName" }
+      }`;
+  }
 
   const response = await generateContentSafe({
     model: MODEL_TEXT_FAST,
@@ -208,7 +277,7 @@ export const generateStoryDraft = async (
   safety: SafetyLevel
 ): Promise<Scene[]> => {
   
-  const systemInstruction = `You are a "Professional Children/YA Writer".
+  let systemInstruction = `You are a "Professional Children/YA Writer".
   
   Task: Create a full story draft based on the Story Bible.
   
@@ -233,6 +302,38 @@ export const generateStoryDraft = async (
       }
     ]
   }`;
+
+  if (mode === StoryMode.CINEMATIC_REALISM) {
+      systemInstruction = `You are a "Cinematic Realism Director".
+      Task: Create a Scene Bible and Shot List for each unit, followed by the narrative script.
+
+      For EACH Unit, the 'text' field MUST start with a Markdown block containing:
+      1. Scene Bible:
+         - Time/Season/Weather.
+         - Location & Layout.
+         - Lighting Plan (Key light, Temp, Shadows).
+         - Sound & Smell Micro-details.
+         - Material & Texture.
+         - Continuity Locks.
+      2. Shot List (8-12 shots):
+         - Establishing, Medium, Close-up, Detail insert, Reaction, Peak Shot.
+         - Specify: Angle, Lens, Focus, Emotion.
+
+      Followed by the actual Narrative Script (Thai).
+
+      Format Constraint: Return valid JSON.
+      {
+        "units": [
+          {
+            "unit_no": 1,
+            "title": "string (Thai)",
+            "text": "string (Markdown formatted: Scene Bible + Shot List + Narrative)",
+            "dialogue": ["string (Thai dialogue lines)"],
+            "emotion_beat": "string"
+          }
+        ]
+      }`;
+  }
 
   const response = await generateContentSafe({
     model: MODEL_TEXT_CREATIVE,
@@ -264,7 +365,10 @@ export const generateProImagePrompts = async (
   const consistencyTokens = bible.consistency ? JSON.stringify(bible.consistency) : "Use consistent characters.";
   const inputUnits = scenes.map(s => ({ unit_no: s.order, content: s.content }));
 
-  const systemInstruction = `You are the "Illustration Prompt Generator – World-Class Visual Director (Kid/Teen Safe)".
+  // Check if we are in Cinematic Mode (inferred from art style or can be passed)
+  const isCinematic = bible.artStyle.toLowerCase().includes('photoreal') || bible.artStyle.toLowerCase().includes('cinematic');
+
+  let systemInstruction = `You are the "Illustration Prompt Generator – World-Class Visual Director (Kid/Teen Safe)".
   
   Input: List of story units + Consistency Tokens.
   
@@ -287,6 +391,36 @@ export const generateProImagePrompts = async (
       }
     ]
   }`;
+
+  if (isCinematic) {
+      systemInstruction = `You are the "Cinematic Realism Director of Photography".
+      Task: Generate Photoreal Cinematic Image Prompts.
+      
+      TEMPLATE TO USE:
+      "Photoreal cinematic still frame, [Setting Atmosphere], ultra-realistic human skin texture, natural pores, subtle imperfections, realistic fabric weave, physically accurate lighting, global illumination, shallow depth of field, bokeh, filmic contrast, cinematic color grading, 8k detail.
+      Subject: [Character Token] (age [Age]), [Face/Body Details], wearing [Wardrobe], posture [Posture].
+      Scene: [Location], [Time], [Weather], [Texture Details].
+      Key props: [3 Props].
+      Lighting: [Key Light], [Rim Light], [Ambient].
+      Camera: full-frame look, lens [35mm/50mm/85mm], aperture [f/1.8–f/2.8], ISO [Value], shutter [Value].
+      Mood: [Mood].
+      Composition: rule of thirds, foreground obstruction subtle, natural candid moment, documentary realism."
+
+      NEGATIVE PROMPT:
+      "cartoon, anime, CGI look, plastic skin, over-smoothing, uncanny face, extra fingers, deformed hands, duplicate face, bad teeth, warped eyes, text artifacts, watermark, logo, oversharpen, neon oversaturation, unrealistic shadows"
+
+      Output Format (JSON Only):
+      {
+        "images": [
+          {
+            "unit_no": 1,
+            "image_prompt": "string (Use the template above)",
+            "negative_prompt": "string (Use the negative prompt above)",
+            "alt_text_th": "string"
+          }
+        ]
+      }`;
+  }
 
   const response = await generateContentSafe({
     model: MODEL_TEXT_FAST,
@@ -907,7 +1041,7 @@ export const orchestrateStoryCreation = async (
 
     // Step 3: Story Bible Builder
     onProgress?.("กำลังสร้างคัมภีร์ข้อมูลเรื่อง (Story Bible)...");
-    const bible = await generateStoryBible(refinedPrompt!, seed!, settings.safety);
+    const bible = await generateStoryBible(refinedPrompt!, seed!, settings.safety, settings.mode);
 
     // Step 4: Story Generator (Drafting)
     onProgress?.("AI กำลังแต่งเนื้อเรื่องภาษาไทย...");

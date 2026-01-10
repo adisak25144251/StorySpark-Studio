@@ -3,7 +3,8 @@ export enum StoryMode {
   PICTURE_BOOK = 'PICTURE_BOOK',
   NOVEL = 'NOVEL',
   COMIC = 'COMIC',
-  NON_FICTION = 'NON_FICTION'
+  NON_FICTION = 'NON_FICTION',
+  CINEMATIC_REALISM = 'CINEMATIC_REALISM' // New Mode
 }
 
 export enum LanguageMode {

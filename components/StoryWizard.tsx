@@ -100,7 +100,7 @@ export const StoryWizard: React.FC<WizardProps> = ({ onComplete, initialPrompt }
               { id: StoryMode.PICTURE_BOOK, label: "Picture Book", icon: "🎨" },
               { id: StoryMode.NOVEL, label: "Short Novel", icon: "📖" },
               { id: StoryMode.COMIC, label: "Comic / Manga", icon: "💬" },
-              { id: StoryMode.NON_FICTION, label: "Knowledge", icon: "🧠" },
+              { id: StoryMode.CINEMATIC_REALISM, label: "Cinematic Realism", icon: "🎬" },
             ].map((m) => (
               <Card 
                 key={m.id} 
@@ -109,6 +109,7 @@ export const StoryWizard: React.FC<WizardProps> = ({ onComplete, initialPrompt }
                 <div onClick={() => setMode(m.id as StoryMode)} className="text-center">
                     <div className="text-5xl mb-4 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">{m.icon}</div>
                     <div className={`font-bold font-cyber tracking-widest ${mode === m.id ? 'text-neon-blue' : 'text-white'}`}>{m.label}</div>
+                    {m.id === StoryMode.CINEMATIC_REALISM && <div className="text-[10px] mt-2 text-neon-pink">Photoreal / 8K</div>}
                 </div>
               </Card>
             ))}
