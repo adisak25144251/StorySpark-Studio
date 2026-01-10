@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { Card, Badge, Button } from './UIComponents';
-import { Book, ShieldCheck, Zap, AlertTriangle, CheckCircle, Info, Menu, PlayCircle, Mic, Globe2, Sparkles, Layout, PenTool, Download, Headphones, Flame, MessageCircle } from 'lucide-react';
+import { Book, ShieldCheck, Zap, AlertTriangle, CheckCircle, Info, Menu, PlayCircle, Mic, Globe2, Sparkles, Layout, PenTool, Download, Headphones, Flame, MessageCircle, Wand2, Lightbulb, Image as ImageIcon } from 'lucide-react';
 
 const GUIDE_CONTENT = [
     {
@@ -19,7 +20,7 @@ const GUIDE_CONTENT = [
                 </p>
                 <div className="inline-block text-left bg-white/5 p-6 rounded-xl border border-white/10">
                     <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-mono text-white/70">
-                        <span className="text-neon-blue">VERSION:</span> <span>2.5.0 (Cyber Edition)</span>
+                        <span className="text-neon-blue">VERSION:</span> <span>2.6.0 (Cyber Edition)</span>
                         <span className="text-neon-blue">DATE:</span> <span>October 2025</span>
                         <span className="text-neon-blue">TARGET:</span> <span>Kids, Teens, Parents, Teachers</span>
                         <span className="text-neon-blue">FORMAT:</span> <span>Web Application</span>
@@ -211,12 +212,65 @@ const GUIDE_CONTENT = [
         )
     },
     {
-        id: 'ch5',
-        title: 'บทที่ 5: โหมด Comic',
+        id: 'magic',
+        title: 'บทที่ 5: Magic Editor (ตกแต่งภาพ)',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    5. โหมดการ์ตูน (Comic Mode)
+                    5. Magic Editor (ตกแต่งภาพ)
+                </h2>
+                <p className="text-white/80 mb-6">
+                    เครื่องมือ <strong>Photo Compositor</strong> สำหรับใส่ข้อความและเปลี่ยนสไตล์ภาพให้ดูเป็นมืออาชีพ
+                </p>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                    <div className="glass-panel p-6 rounded-xl border-l-4 border-neon-pink">
+                        <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+                            <Wand2 className="w-5 h-5 text-neon-pink" /> วิธีเข้าใช้งาน
+                        </h3>
+                        <ul className="list-disc list-inside text-sm text-white/70 space-y-2">
+                            <li>เลือกเมนู <strong>Magic Editor</strong> จากแถบด้านซ้าย</li>
+                            <li>หรือกดปุ่ม <strong>EDIT & SHARE</strong> บนรูปภาพในหน้า Studio</li>
+                            <li>ระบบจะแสดงเฉพาะภาพที่ Generate เสร็จแล้วเท่านั้น</li>
+                        </ul>
+                    </div>
+
+                    <div className="glass-panel p-6 rounded-xl border-l-4 border-neon-blue">
+                        <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+                            <ImageIcon className="w-5 h-5 text-neon-blue" /> ฟีเจอร์เด่น
+                        </h3>
+                        <ul className="space-y-3 text-sm text-white/70">
+                            <li>
+                                <strong className="text-white block">Auto Text Overlay:</strong>
+                                ดึงเนื้อเรื่องมาจัดวางบนภาพให้อัตโนมัติ
+                            </li>
+                            <li>
+                                <strong className="text-white block">Style Presets:</strong>
+                                <div className="flex flex-wrap gap-2 mt-1">
+                                    <Badge>CINEMATIC (หนัง)</Badge>
+                                    <Badge>COMIC (การ์ตูน)</Badge>
+                                    <Badge>NEON (ไซเบอร์)</Badge>
+                                    <Badge>HORROR (สยองขวัญ)</Badge>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div className="bg-white/5 p-4 rounded-xl flex items-center justify-between border border-white/10">
+                    <span className="text-sm text-white/60">เมื่อตกแต่งเสร็จแล้ว กดปุ่ม <strong>SAVE IMAGE</strong> เพื่อดาวน์โหลดไฟล์ PNG ความละเอียดสูง</span>
+                    <Download className="w-5 h-5 text-white/40" />
+                </div>
+            </div>
+        )
+    },
+    {
+        id: 'ch5',
+        title: 'บทที่ 6: โหมด Comic',
+        content: (
+            <div className="space-y-6">
+                <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
+                    6. โหมดการ์ตูน (Comic Mode)
                 </h2>
                 <div className="bg-purple-900/20 p-4 rounded-xl border border-purple-500/30 mb-6">
                     <h4 className="font-bold text-purple-300 mb-2 flex items-center"><Info className="w-4 h-4 mr-2"/> วิธีเปิดใช้งาน</h4>
@@ -245,11 +299,11 @@ const GUIDE_CONTENT = [
     },
     {
         id: 'ch6',
-        title: 'บทที่ 6: โหมด 2 ภาษา',
+        title: 'บทที่ 7: โหมด 2 ภาษา',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    6. โหมด 2 ภาษา (Bilingual)
+                    7. โหมด 2 ภาษา (Bilingual)
                 </h2>
                 <p className="text-white/80 mb-6">
                     StorySpark รองรับการเรียนรู้ภาษาด้วยฟีเจอร์ <strong>Polyglot Translator</strong>
@@ -278,11 +332,11 @@ const GUIDE_CONTENT = [
     },
     {
         id: 'ch7',
-        title: 'บทที่ 7: เสียงพากย์และเอฟเฟกต์',
+        title: 'บทที่ 8: เสียงพากย์และเอฟเฟกต์',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    7. ระบบเสียง (Audio & SFX)
+                    8. ระบบเสียง (Audio & SFX)
                 </h2>
                 <p className="text-white/80 mb-6">
                     เปลี่ยนนิยายให้อ่านให้ฟังได้ (Audiobook) ด้วยแท็บ <strong>AUDIO</strong> ใน Studio Editor
@@ -314,11 +368,11 @@ const GUIDE_CONTENT = [
     },
     {
         id: 'ch8',
-        title: 'บทที่ 8: Trending Digest',
+        title: 'บทที่ 9: Trending Digest',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    8. Trending Digest & Ideas
+                    9. Trending Digest & Ideas
                 </h2>
                 <p className="text-white/80 mb-4">
                     คิดไม่ออกว่าจะแต่งเรื่องอะไร? ใช้ฟีเจอร์ <strong>Trending Signals</strong> ในหน้า Dashboard
@@ -339,12 +393,67 @@ const GUIDE_CONTENT = [
         )
     },
     {
-        id: 'ch9',
-        title: 'บทที่ 9: การส่งออกและแชร์',
+        id: 'idea',
+        title: 'บทที่ 10: Idea Lab (ห้องทดลองไอเดีย)',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    9. การส่งออกและแชร์ (Export)
+                    10. Idea Lab (ห้องทดลองไอเดีย)
+                </h2>
+                <p className="text-white/80 mb-6">
+                    โรงงานผลิตพล็อตเรื่องแบบ <strong>Viral Story</strong> สำหรับแก้ปัญหา Writer's Block โดยเฉพาะ
+                </p>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                    <Card className="p-6 bg-neon-yellow/5 border-neon-yellow/30">
+                        <h3 className="font-bold text-neon-yellow mb-3 flex items-center">
+                            <Lightbulb className="w-5 h-5 mr-2" /> Neural Randomizer
+                        </h3>
+                        <p className="text-sm text-white/70 mb-4">
+                            ระบบจะสุ่มองค์ประกอบเรื่องให้โดยอัตโนมัติ เพื่อสร้างความแปลกใหม่:
+                        </p>
+                        <ul className="list-disc list-inside text-sm text-white/60 space-y-1">
+                            <li><strong>Magic Item:</strong> ของวิเศษในชีวิตประจำวัน</li>
+                            <li><strong>Rule & Cost:</strong> กฎการใช้งานและราคาที่ต้องแลก</li>
+                            <li><strong>Twist:</strong> จุดหักมุมที่คาดไม่ถึง</li>
+                        </ul>
+                    </Card>
+
+                    <div className="glass-panel p-6 rounded-xl">
+                        <h3 className="font-bold text-white mb-3">สิ่งที่คุณจะได้รับ</h3>
+                        <div className="space-y-3 text-sm text-white/70">
+                            <div className="flex justify-between border-b border-white/10 pb-2">
+                                <span>1. ชื่อเรื่อง & Hook</span>
+                                <Badge color="bg-white/10">3 Lines</Badge>
+                            </div>
+                            <div className="flex justify-between border-b border-white/10 pb-2">
+                                <span>2. เนื้อเรื่องเต็ม (Script)</span>
+                                <Badge color="bg-white/10">~1000 Words</Badge>
+                            </div>
+                            <div className="flex justify-between pb-2">
+                                <span>3. Cinematic Storyboard</span>
+                                <Badge color="bg-neon-blue/20 text-neon-blue">Image Prompts</Badge>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-black/30 p-4 rounded-xl border border-white/10 flex items-start gap-3">
+                    <Info className="w-5 h-5 text-neon-blue flex-shrink-0 mt-1" />
+                    <div className="text-sm text-white/60">
+                        <strong>Pro Tip:</strong> คุณสามารถกดปุ่ม <span className="inline-block border border-white/20 rounded px-1"><Sparkles className="w-3 h-3 inline"/> Copy</span> ที่ช่อง Image Prompt ใน Idea Lab แล้วนำไปวางในช่อง AI Prompt ของ Studio Editor เพื่อสร้างภาพจริงได้ทันที
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: 'ch9',
+        title: 'บทที่ 11: การส่งออกและแชร์',
+        content: (
+            <div className="space-y-6">
+                <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
+                    11. การส่งออกและแชร์ (Export)
                 </h2>
                 
                 <div className="space-y-4">
@@ -370,11 +479,11 @@ const GUIDE_CONTENT = [
     },
     {
         id: 'ch10',
-        title: 'บทที่ 10: ความปลอดภัย',
+        title: 'บทที่ 12: ความปลอดภัย',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    10. ความปลอดภัย (Safety & Parents)
+                    12. ความปลอดภัย (Safety & Parents)
                 </h2>
                 
                 <div className="grid gap-6">
@@ -414,11 +523,11 @@ const GUIDE_CONTENT = [
     },
     {
         id: 'ch11',
-        title: 'บทที่ 11: การแก้ปัญหา',
+        title: 'บทที่ 13: การแก้ปัญหา',
         content: (
             <div className="space-y-6">
                 <h2 className="text-3xl font-cyber font-bold text-white border-b border-white/10 pb-4 mb-6">
-                    11. การแก้ปัญหา (Troubleshooting)
+                    13. การแก้ปัญหา (Troubleshooting)
                 </h2>
                 
                 <div className="space-y-4">
