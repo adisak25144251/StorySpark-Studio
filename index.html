@@ -5,71 +5,85 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StorySpark Studio - Cyber Edition</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@400;700;900&family=Kanit:wght@300;400;600;800&display=swap"
-    rel="stylesheet">
+    rel="stylesheet" />
+
+  <!-- (Option) ใช้ Tailwind CDN ได้ แต่ถ้าคุณใช้ Tailwind build อยู่แล้วสามารถลบได้ -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontSize: {
-            'xxs': 'clamp(0.65rem, 0.6rem + 0.25vw, 0.75rem)',
-            'xs': 'clamp(0.75rem, 0.7rem + 0.35vw, 0.875rem)',
-            'sm': 'clamp(0.875rem, 0.8rem + 0.4vw, 1rem)',
-            'base': 'clamp(1rem, 0.95rem + 0.5vw, 1.125rem)',
-            'lg': 'clamp(1.125rem, 1.05rem + 0.6vw, 1.25rem)',
-            'xl': 'clamp(1.25rem, 1.15rem + 0.7vw, 1.5rem)',
-            '2xl': 'clamp(1.5rem, 1.35rem + 0.8vw, 2rem)',
-            '3xl': 'clamp(1.75rem, 1.5rem + 1vw, 2.5rem)',
-            '4xl': 'clamp(2.25rem, 2rem + 1.5vw, 3.5rem)',
-            '5xl': 'clamp(2.5rem, 2.2rem + 2vw, 4.5rem)',
+            xxs: "clamp(0.65rem, 0.6rem + 0.25vw, 0.75rem)",
+            xs: "clamp(0.75rem, 0.7rem + 0.35vw, 0.875rem)",
+            sm: "clamp(0.875rem, 0.8rem + 0.4vw, 1rem)",
+            base: "clamp(1rem, 0.95rem + 0.5vw, 1.125rem)",
+            lg: "clamp(1.125rem, 1.05rem + 0.6vw, 1.25rem)",
+            xl: "clamp(1.25rem, 1.15rem + 0.7vw, 1.5rem)",
+            "2xl": "clamp(1.5rem, 1.35rem + 0.8vw, 2rem)",
+            "3xl": "clamp(1.75rem, 1.5rem + 1vw, 2.5rem)",
+            "4xl": "clamp(2.25rem, 2rem + 1.5vw, 3.5rem)",
+            "5xl": "clamp(2.5rem, 2.2rem + 2vw, 4.5rem)",
           },
           fontFamily: {
-            sans: ['Nunito', 'Kanit', 'sans-serif'],
-            display: ['Fredoka', 'Kanit', 'sans-serif'],
-            cyber: ['Orbitron', 'sans-serif'],
-            thai: ['Kanit', 'sans-serif'],
+            sans: ["Nunito", "Kanit", "sans-serif"],
+            display: ["Fredoka", "Kanit", "sans-serif"],
+            cyber: ["Orbitron", "sans-serif"],
+            thai: ["Kanit", "sans-serif"],
           },
           colors: {
             cyber: {
-              dark: '#050014',
-              glass: 'rgba(255, 255, 255, 0.05)',
-              border: 'rgba(255, 255, 255, 0.15)',
+              dark: "#050014",
+              glass: "rgba(255, 255, 255, 0.05)",
+              border: "rgba(255, 255, 255, 0.15)",
             },
             neon: {
-              blue: '#00f3ff',
-              pink: '#ff00ff',
-              purple: '#bc13fe',
-              yellow: '#fcee0a',
-              green: '#0aff60'
-            }
+              blue: "#00f3ff",
+              pink: "#ff00ff",
+              purple: "#bc13fe",
+              yellow: "#fcee0a",
+              green: "#0aff60",
+            },
           },
           boxShadow: {
-            'neon-blue': '0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3)',
-            'neon-pink': '0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3)',
-            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            "neon-blue":
+              "0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3)",
+            "neon-pink":
+              "0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3)",
+            glass: "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
           },
           backgroundImage: {
-            'cyber-grid': "linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px)",
-            'deep-space': "radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 100%)",
-          }
-        }
-      }
-    }
+            "cyber-grid":
+              "linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px)",
+            "deep-space":
+              "radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 100%)",
+          },
+        },
+      },
+    };
   </script>
+
   <style>
     body {
       background-color: #050014;
-      background-image:
-        radial-gradient(at 0% 0%, rgba(188, 19, 254, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(0, 243, 255, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(255, 0, 255, 0.15) 0px, transparent 50%);
+      background-image: radial-gradient(at 0% 0%,
+          rgba(188, 19, 254, 0.15) 0px,
+          transparent 50%),
+        radial-gradient(at 100% 0%,
+          rgba(0, 243, 255, 0.15) 0px,
+          transparent 50%),
+        radial-gradient(at 100% 100%,
+          rgba(255, 0, 255, 0.15) 0px,
+          transparent 50%);
       background-attachment: fixed;
       color: #e2e8f0;
+      margin: 0;
     }
 
-    /* Cyber Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -124,7 +138,6 @@
       }
     }
 
-    /* Glassmorphism Utilities */
     .glass-panel {
       background: rgba(20, 20, 35, 0.6);
       backdrop-filter: blur(16px);
@@ -142,9 +155,9 @@
     .glass-input:focus {
       border-color: #00f3ff;
       box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+      outline: none;
     }
 
-    /* Utility for hiding scrollbar in horizontal lists but keeping functionality */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -154,28 +167,11 @@
       scrollbar-width: none;
     }
   </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
-  }
-}
-</script>
-
 </head>
 
 <body>
   <div id="root"></div>
-</body>
-<link rel="stylesheet" href="/index.css">
-</head>
-
-<body>
-  <div id="root"></div>
+  <!-- Vite จะ compile TSX -> JS ตอน build และ rewrite เป็นไฟล์ใน /assets อัตโนมัติ -->
   <script type="module" src="/index.tsx"></script>
 </body>
 
