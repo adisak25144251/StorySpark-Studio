@@ -221,7 +221,7 @@ export const PromptLab: React.FC<PromptLabProps> = ({ project, onNavigate }) => 
                                 </p>
                                 
                                 <div className="bg-white/5 p-3 rounded-lg text-xs text-white/60 border border-white/10 font-mono">
-                                    <strong className="text-neon-pink">>> ANALYSIS:</strong> {testResult.summary}
+                                    <strong className="text-neon-pink">&gt;&gt; ANALYSIS:</strong> {testResult.summary}
                                 </div>
                             </div>
                         ) : (
