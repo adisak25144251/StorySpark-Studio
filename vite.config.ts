@@ -29,5 +29,20 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "."),
       },
     },
+
+    // ✅ ลด warning chunk > 500KB + โหลดเร็วขึ้นบนมือถือ
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ["react", "react-dom"],
+            lucide: ["lucide-react"],
+            genai: ["@google/genai"],
+          },
+        },
+      },
+      // ถ้ายังเตือนอยู่และคุณไม่อยากเห็น warning ปรับได้ (หน่วย kB)
+      // chunkSizeWarningLimit: 800,
+    },
   };
 });
