@@ -280,32 +280,32 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
       )}
 
       {/* Toolbar - Glass Bar */}
-      <div className="glass-panel border-b border-white/10 px-6 py-3 flex items-center justify-between shadow-neon-blue/10 flex-shrink-0 z-10 m-4 rounded-xl">
-        <div className="flex items-center gap-4">
-            <h2 className="font-cyber font-bold text-xl text-white whitespace-nowrap drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+      <div className="glass-panel border-b border-white/10 px-4 md:px-6 py-3 flex flex-nowrap items-center justify-between shadow-neon-blue/10 flex-shrink-0 z-10 m-2 md:m-4 rounded-xl overflow-x-auto no-scrollbar gap-4">
+        <div className="flex items-center gap-4 flex-shrink-0">
+            <h2 className="font-cyber font-bold text-lg md:text-xl text-white whitespace-nowrap drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
             UNIT {currentSceneIdx + 1} <span className="text-white/40 font-normal text-sm font-sans">/ {project.scenes.length}</span>
             </h2>
             <div className="flex bg-black/40 p-1 rounded-lg flex-shrink-0 border border-white/10">
-                <button onClick={() => setActiveTab('STORY')} className={`px-4 py-1 text-sm font-bold rounded-md transition-all ${activeTab === 'STORY' ? 'bg-neon-blue text-black shadow-[0_0_10px_rgba(0,243,255,0.6)]' : 'text-white/50 hover:text-white'}`}>STORY</button>
-                <button onClick={() => setActiveTab('AUDIO')} className={`px-4 py-1 text-sm font-bold rounded-md transition-all ${activeTab === 'AUDIO' ? 'bg-neon-purple text-white shadow-[0_0_10px_rgba(188,19,254,0.6)]' : 'text-white/50 hover:text-white'}`}>AUDIO</button>
+                <button onClick={() => setActiveTab('STORY')} className={`px-3 md:px-4 py-1 text-xs md:text-sm font-bold rounded-md transition-all ${activeTab === 'STORY' ? 'bg-neon-blue text-black shadow-[0_0_10px_rgba(0,243,255,0.6)]' : 'text-white/50 hover:text-white'}`}>STORY</button>
+                <button onClick={() => setActiveTab('AUDIO')} className={`px-3 md:px-4 py-1 text-xs md:text-sm font-bold rounded-md transition-all ${activeTab === 'AUDIO' ? 'bg-neon-purple text-white shadow-[0_0_10px_rgba(188,19,254,0.6)]' : 'text-white/50 hover:text-white'}`}>AUDIO</button>
             </div>
         </div>
 
-        <div className="flex gap-2 items-center">
-             <Button variant="secondary" onClick={handleQACheck} isLoading={isReviewing} disabled={isReviewing} className="hidden md:flex text-sm py-2 px-4 border-neon-blue/30 text-neon-blue relative">
-                <ShieldCheck className="w-4 h-4 mr-2" /> QA SCAN
+        <div className="flex gap-2 items-center flex-shrink-0">
+             <Button variant="secondary" onClick={handleQACheck} isLoading={isReviewing} disabled={isReviewing} className="text-xs md:text-sm py-1.5 md:py-2 px-3 md:px-4 border-neon-blue/30 text-neon-blue relative whitespace-nowrap">
+                <ShieldCheck className="w-4 h-4 md:mr-2" /> <span className="hidden md:inline">QA SCAN</span>
                 {lastReviewIssues.length > 0 && <span className="absolute -top-1 -right-1 flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span></span>}
              </Button>
-             <div className="h-6 w-px bg-white/20 mx-2 hidden md:block" />
+             <div className="h-6 w-px bg-white/20 mx-1 md:mx-2 hidden md:block" />
              <div className="flex items-center bg-black/40 rounded-lg p-1 border border-white/10">
-                <Button variant="ghost" onClick={handlePrev} disabled={currentSceneIdx === 0} className="p-2 h-8 w-8 rounded-md hover:bg-white/10"><ChevronLeft className="w-4 h-4" /></Button>
-                <span className="text-xs font-mono w-12 text-center text-white/70">{currentSceneIdx + 1}/{project.scenes.length}</span>
-                <Button variant="ghost" onClick={handleNext} disabled={currentSceneIdx === project.scenes.length - 1} className="p-2 h-8 w-8 rounded-md hover:bg-white/10"><ChevronRight className="w-4 h-4" /></Button>
+                <Button variant="ghost" onClick={handlePrev} disabled={currentSceneIdx === 0} className="p-1.5 md:p-2 h-8 w-8 rounded-md hover:bg-white/10"><ChevronLeft className="w-4 h-4" /></Button>
+                <span className="text-xs font-mono w-10 md:w-12 text-center text-white/70">{currentSceneIdx + 1}/{project.scenes.length}</span>
+                <Button variant="ghost" onClick={handleNext} disabled={currentSceneIdx === project.scenes.length - 1} className="p-1.5 md:p-2 h-8 w-8 rounded-md hover:bg-white/10"><ChevronRight className="w-4 h-4" /></Button>
              </div>
-             <Button variant="secondary" className="ml-2 text-sm py-2 px-4 border-white/20 text-white/70 hover:text-white" onClick={handleExportPDF}>
+             <Button variant="secondary" className="ml-2 text-xs md:text-sm py-1.5 md:py-2 px-3 md:px-4 border-white/20 text-white/70 hover:text-white" onClick={handleExportPDF}>
                 <FileText className="w-4 h-4 md:mr-2"/> <span className="hidden md:inline">PDF</span>
              </Button>
-             <Button variant="primary" className="ml-2 text-sm py-2 px-4 shadow-neon-blue" onClick={handleSaveProject}>
+             <Button variant="primary" className="ml-2 text-xs md:text-sm py-1.5 md:py-2 px-3 md:px-4 shadow-neon-blue" onClick={handleSaveProject}>
                 <Save className="w-4 h-4 md:mr-2"/> <span className="hidden md:inline">SAVE JSON</span>
              </Button>
         </div>
@@ -348,7 +348,7 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
       <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12 h-full relative px-4 pb-4 gap-4">
         
         {/* === LEFT PANEL === */}
-        <div className="lg:col-span-7 h-full overflow-y-auto p-6 glass-panel rounded-2xl border border-white/10">
+        <div className="lg:col-span-7 h-full overflow-y-auto p-4 md:p-6 glass-panel rounded-2xl border border-white/10">
            {activeTab === 'STORY' ? (
              <div className="h-full flex flex-col gap-6 max-w-3xl mx-auto">
                <div className="flex-1 flex flex-col">
@@ -358,7 +358,7 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
                   </div>
                   <div className="flex-1 relative group">
                     <textarea 
-                        className="w-full h-full min-h-[300px] resize-none outline-none text-lg md:text-xl text-white font-sans leading-relaxed bg-transparent border-0 focus:ring-0 p-0 placeholder:text-white/20 selection:bg-neon-pink selection:text-white"
+                        className="w-full h-full min-h-[300px] resize-none outline-none text-base md:text-xl text-white font-sans leading-relaxed bg-transparent border-0 focus:ring-0 p-0 placeholder:text-white/20 selection:bg-neon-pink selection:text-white"
                         value={scene.content}
                         onChange={(e) => updateSceneContent(e.target.value)}
                         placeholder="Initialize story sequence..."
@@ -384,7 +384,7 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
                       <div className="relative">
                           {scene.contentTranslation ? (
                               <textarea 
-                                className="w-full min-h-[200px] resize-none outline-none text-lg text-white/80 font-sans leading-relaxed bg-black/30 p-4 rounded-xl border border-white/10 focus:border-neon-pink focus:bg-black/50 transition-all"
+                                className="w-full min-h-[200px] resize-none outline-none text-base md:text-lg text-white/80 font-sans leading-relaxed bg-black/30 p-4 rounded-xl border border-white/10 focus:border-neon-pink focus:bg-black/50 transition-all"
                                 value={scene.contentTranslation}
                                 onChange={(e) => updateSceneContent(e.target.value, true)}
                               />
@@ -502,7 +502,7 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
         </div>
 
         {/* === RIGHT PANEL: VISUALS === */}
-        <div className="lg:col-span-5 h-full overflow-y-auto glass-panel p-6 rounded-2xl border border-white/10">
+        <div className="lg:col-span-5 h-full overflow-y-auto glass-panel p-4 md:p-6 rounded-2xl border border-white/10">
            <div className="sticky top-0 z-10 pb-4 mb-2 flex justify-between items-center border-b border-white/10">
                 <h3 className="font-bold text-white flex items-center font-cyber">
                     <ImageIcon className="w-4 h-4 mr-2 text-neon-pink" /> VISUAL MODULE
@@ -547,14 +547,14 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
                   </div>
               )}
 
-              <div className="absolute bottom-4 left-4 right-4 flex justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 gap-2">
+              <div className="absolute bottom-4 left-4 right-4 flex justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 gap-2 flex-wrap">
                  {scene.imageUrl && (
-                     <Button variant="secondary" onClick={() => setShowPhotoEditor(true)} className="scale-90 hover:scale-100 text-sm py-2 px-6 border-white/30 bg-black/60 backdrop-blur-md">
-                        <Wand2 className="w-4 h-4 mr-2" /> EDIT & SHARE
+                     <Button variant="secondary" onClick={() => setShowPhotoEditor(true)} className="scale-90 hover:scale-100 text-xs py-2 px-4 border-white/30 bg-black/60 backdrop-blur-md">
+                        <Wand2 className="w-4 h-4 mr-2" /> EDIT
                      </Button>
                  )}
-                 <Button variant="magic" onClick={handleGenerateImage} isLoading={isGeneratingImg} className="shadow-neon-pink scale-90 hover:scale-100 text-sm py-2 px-6">
-                    {scene.imageUrl ? <><RefreshCw className="w-4 h-4 mr-2"/> REGENERATE</> : <><ImageIcon className="w-4 h-4 mr-2"/> GENERATE</>}
+                 <Button variant="magic" onClick={handleGenerateImage} isLoading={isGeneratingImg} className="shadow-neon-pink scale-90 hover:scale-100 text-xs py-2 px-4">
+                    {scene.imageUrl ? <><RefreshCw className="w-4 h-4 mr-2"/> REGEN</> : <><ImageIcon className="w-4 h-4 mr-2"/> GEN</>}
                  </Button>
               </div>
            </Card>

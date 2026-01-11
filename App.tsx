@@ -60,6 +60,7 @@ const App: React.FC = () => {
   const [wizardInitPrompt, setWizardInitPrompt] = useState<string>("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Initialize data
   useEffect(() => {
       const initData = async () => {
           try {
@@ -73,6 +74,17 @@ const App: React.FC = () => {
           } catch (e) { console.error(e); }
       };
       initData();
+  }, []);
+
+  // Handle Resize to close mobile menu on desktop
+  useEffect(() => {
+      const handleResize = () => {
+          if (window.innerWidth >= 768) {
+              setIsMobileMenuOpen(false);
+          }
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const project = projects.find(p => p.id === currentProjectId) || null;
@@ -193,17 +205,17 @@ const App: React.FC = () => {
       
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md md:hidden flex flex-col p-4 animate-fade-in">
+          <div className="fixed inset-0 z-50 bg-[#050014]/95 backdrop-blur-xl md:hidden flex flex-col p-6 animate-fade-in overflow-hidden">
               <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
                  <h1 className="font-cyber font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-purple">
                      STORY<span className="text-neon-pink">SPARK</span>
                  </h1>
-                 <button onClick={() => setIsMobileMenuOpen(false)} className="bg-white/10 p-2 rounded-full hover:bg-white/20">
+                 <button onClick={() => setIsMobileMenuOpen(false)} className="bg-white/10 p-2 rounded-full hover:bg-white/20 active:scale-95 transition-all">
                      <X className="text-white w-6 h-6" />
                  </button>
               </div>
               
-              <nav className="space-y-2 overflow-y-auto flex-1">
+              <nav className="space-y-2 overflow-y-auto flex-1 pb-10">
                   {MAIN_NAV.map(item => (
                       <NavButton 
                           key={item.id} 
@@ -228,7 +240,7 @@ const App: React.FC = () => {
                       />
                   ))}
                   
-                  <div className="mt-4 pt-4 border-t border-white/10">
+                  <div className="mt-6 pt-4 border-t border-white/10">
                       <button 
                          onClick={() => { setView(AppView.GUIDE); setIsMobileMenuOpen(false); }}
                          className={`w-full flex items-center p-3 rounded-xl transition-all duration-300 group ${view === AppView.GUIDE ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white hover:bg-white/5'}`}
@@ -255,7 +267,7 @@ const App: React.FC = () => {
                     <span className="font-cyber font-black text-2xl text-neon-blue">S<span className="text-neon-pink">S</span></span>
                  </div>
              </div>
-             <nav className="space-y-3 flex-1">
+             <nav className="space-y-3 flex-1 overflow-y-auto no-scrollbar">
                  {MAIN_NAV.map(item => (
                       <NavButton 
                           key={item.id} 
@@ -306,7 +318,7 @@ const App: React.FC = () => {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
           
-          <header className="md:hidden h-16 glass-panel border-b-0 border-white/10 flex items-center px-4 justify-between flex-shrink-0 m-4 rounded-2xl">
+          <header className="md:hidden h-16 glass-panel border-b-0 border-white/10 flex items-center px-4 justify-between flex-shrink-0 m-4 rounded-2xl shadow-lg">
               <span className="font-cyber font-bold text-xl text-neon-blue">STORY<span className="text-neon-pink">SPARK</span></span>
               <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 hover:bg-white/10 rounded-lg transition-colors"><Menu className="text-white w-6 h-6" /></button>
           </header>
