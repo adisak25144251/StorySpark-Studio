@@ -1,124 +1,149 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StorySpark Studio - Cyber Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@400;700;900&family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontSize: {
-              'xxs': 'clamp(0.6rem, 0.55rem + 0.2vw, 0.75rem)',
-              'xs': 'clamp(0.7rem, 0.65rem + 0.3vw, 0.85rem)',
-              'sm': 'clamp(0.8rem, 0.75rem + 0.4vw, 1rem)',
-              'base': 'clamp(0.9rem, 0.85rem + 0.5vw, 1.15rem)',
-              'lg': 'clamp(1rem, 0.95rem + 0.6vw, 1.35rem)',
-              'xl': 'clamp(1.15rem, 1.05rem + 0.7vw, 1.5rem)',
-              '2xl': 'clamp(1.35rem, 1.25rem + 0.8vw, 2rem)',
-              '3xl': 'clamp(1.6rem, 1.4rem + 1vw, 2.5rem)',
-              '4xl': 'clamp(2rem, 1.7rem + 1.2vw, 3.5rem)',
-              '5xl': 'clamp(2.5rem, 2rem + 1.5vw, 4.5rem)',
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StorySpark Studio - Cyber Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@400;700;900&family=Kanit:wght@300;400;600;800&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontSize: {
+            'xxs': 'clamp(0.6rem, 0.55rem + 0.2vw, 0.75rem)',
+            'xs': 'clamp(0.7rem, 0.65rem + 0.3vw, 0.85rem)',
+            'sm': 'clamp(0.8rem, 0.75rem + 0.4vw, 1rem)',
+            'base': 'clamp(0.9rem, 0.85rem + 0.5vw, 1.15rem)',
+            'lg': 'clamp(1rem, 0.95rem + 0.6vw, 1.35rem)',
+            'xl': 'clamp(1.15rem, 1.05rem + 0.7vw, 1.5rem)',
+            '2xl': 'clamp(1.35rem, 1.25rem + 0.8vw, 2rem)',
+            '3xl': 'clamp(1.6rem, 1.4rem + 1vw, 2.5rem)',
+            '4xl': 'clamp(2rem, 1.7rem + 1.2vw, 3.5rem)',
+            '5xl': 'clamp(2.5rem, 2rem + 1.5vw, 4.5rem)',
+          },
+          fontFamily: {
+            sans: ['Nunito', 'Kanit', 'sans-serif'],
+            display: ['Fredoka', 'Kanit', 'sans-serif'],
+            cyber: ['Orbitron', 'sans-serif'],
+            thai: ['Kanit', 'sans-serif'],
+          },
+          colors: {
+            cyber: {
+              dark: '#050014',
+              glass: 'rgba(255, 255, 255, 0.05)',
+              border: 'rgba(255, 255, 255, 0.15)',
             },
-            fontFamily: {
-              sans: ['Nunito', 'Kanit', 'sans-serif'],
-              display: ['Fredoka', 'Kanit', 'sans-serif'],
-              cyber: ['Orbitron', 'sans-serif'],
-              thai: ['Kanit', 'sans-serif'],
-            },
-            colors: {
-              cyber: {
-                dark: '#050014',
-                glass: 'rgba(255, 255, 255, 0.05)',
-                border: 'rgba(255, 255, 255, 0.15)',
-              },
-              neon: {
-                blue: '#00f3ff',
-                pink: '#ff00ff',
-                purple: '#bc13fe',
-                yellow: '#fcee0a',
-                green: '#0aff60'
-              }
-            },
-            boxShadow: {
-              'neon-blue': '0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3)',
-              'neon-pink': '0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3)',
-              'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-            },
-            backgroundImage: {
-              'cyber-grid': "linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px)",
-              'deep-space': "radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 100%)",
+            neon: {
+              blue: '#00f3ff',
+              pink: '#ff00ff',
+              purple: '#bc13fe',
+              yellow: '#fcee0a',
+              green: '#0aff60'
             }
+          },
+          boxShadow: {
+            'neon-blue': '0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3)',
+            'neon-pink': '0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+          },
+          backgroundImage: {
+            'cyber-grid': "linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px)",
+            'deep-space': "radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 100%)",
           }
         }
       }
-    </script>
-    <style>
-      body {
-        background-color: #050014;
-        background-image: 
-          radial-gradient(at 0% 0%, rgba(188, 19, 254, 0.15) 0px, transparent 50%),
-          radial-gradient(at 100% 0%, rgba(0, 243, 255, 0.15) 0px, transparent 50%),
-          radial-gradient(at 100% 100%, rgba(255, 0, 255, 0.15) 0px, transparent 50%);
-        background-attachment: fixed;
-        color: #e2e8f0;
-      }
-      
-      /* Cyber Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0f0f1a; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #00f3ff, #bc13fe); 
-        border-radius: 3px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #ff00ff; 
+    }
+  </script>
+  <style>
+    body {
+      background-color: #050014;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(188, 19, 254, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(0, 243, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 0, 255, 0.15) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: #e2e8f0;
+    }
+
+    /* Cyber Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f0f1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #00f3ff, #bc13fe);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff00ff;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(10px);
       }
 
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out;
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
       }
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); filter: blur(10px); }
-        to { opacity: 1; transform: translateY(0); filter: blur(0); }
-      }
-      @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
       }
 
-      /* Glassmorphism Utilities */
-      .glass-panel {
-        background: rgba(20, 20, 35, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      50% {
+        transform: translateY(-10px);
       }
-      
-      .glass-input {
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
+
+      100% {
+        transform: translateY(0px);
       }
-      .glass-input:focus {
-        border-color: #00f3ff;
-        box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-      }
-    </style>
+    }
+
+    /* Glassmorphism Utilities */
+    .glass-panel {
+      background: rgba(20, 20, 35, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .glass-input {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .glass-input:focus {
+      border-color: #00f3ff;
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -130,10 +155,12 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
+
+<body>
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>
