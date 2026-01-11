@@ -71,5 +71,14 @@ export const RECOMMENDATIONS: FeatureRecommendation[] = [
     category: "Creator Tools",
     effort: 'M',
     risk_control: "ตรวจจับถ้อยคำรุนแรงในเสียง"
+  },
+  // 8. Export
+  {
+    name: "ระบบส่งออก E-book (PDF/ePub Export)",
+    why: "ผู้ใช้ต้องการนำผลงานไปจำหน่ายหรือเผยแพร่ในรูปแบบ E-book ที่สวยงาม",
+    impact: "สร้างรายได้ให้ Creator",
+    category: "Creator Tools",
+    effort: 'L',
+    risk_control: "Watermark ป้องกันลิขสิทธิ์"
   }
 ];

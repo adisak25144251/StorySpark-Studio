@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Card, Button, Badge } from './UIComponents';
-import { Lightbulb, RefreshCw, Copy, Check, Info, Film, User, Camera, Heart, Zap, AlertTriangle, BookOpen } from 'lucide-react';
+import { Lightbulb, RefreshCw, Copy, Check, Info, Film, User, Camera, Heart, Zap, AlertTriangle, BookOpen, Sparkles } from 'lucide-react';
 import * as GeminiService from '../geminiService';
 import { ViralStory } from '../types';
 
@@ -133,9 +133,9 @@ export const IdeaGenerator: React.FC = () => {
                                 <User className="w-5 h-5 mr-2" /> CHARACTERS
                             </h3>
                             <div className="space-y-4">
-                                {story.characters.map((char, i) => (
+                                {story.characters?.map((char, i) => (
                                     <div key={i} className="flex gap-4 items-start">
-                                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">{char.name[0]}</div>
+                                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">{char.name?.[0] || '?'}</div>
                                         <div>
                                             <div className="font-bold text-white">{char.name} <span className="text-xs font-normal text-white/50">({char.role})</span></div>
                                             <div className="text-sm text-white/60 mt-1"><span className="text-neon-green">Wound:</span> {char.wound}</div>
@@ -167,7 +167,7 @@ export const IdeaGenerator: React.FC = () => {
                             <Info className="w-4 h-4 mr-2" /> Fair Twist Clues (Hidden in story)
                         </h3>
                         <div className="grid md:grid-cols-2 gap-4">
-                            {story.twist_clues.map((clue, i) => (
+                            {story.twist_clues?.map((clue, i) => (
                                 <div key={i} className="flex gap-3 items-center text-sm text-purple-200">
                                     <div className="w-6 h-6 rounded-full bg-neon-purple/20 flex items-center justify-center text-xs font-bold shrink-0">{i+1}</div>
                                     {clue}
@@ -182,7 +182,7 @@ export const IdeaGenerator: React.FC = () => {
                             <Camera className="w-6 h-6 mr-3 text-neon-blue" /> CINEMATIC STORYBOARD
                         </h3>
                         <div className="grid gap-6">
-                            {story.storyboard.map((scene, i) => (
+                            {story.storyboard?.map((scene, i) => (
                                 <div key={i} className="glass-panel p-6 rounded-xl border border-white/10 hover:border-neon-blue/40 transition-all">
                                     <div className="flex justify-between items-start mb-4">
                                         <div className="flex items-center gap-3">
@@ -199,19 +199,27 @@ export const IdeaGenerator: React.FC = () => {
                                             <p className="text-neon-pink italic"><strong className="text-neon-pink not-italic">Cliffhanger:</strong> {scene.cliffhanger_tag}</p>
                                         </div>
                                         <div className="col-span-1">
-                                            <div className="bg-black/40 p-3 rounded-lg border border-white/10 h-full flex flex-col">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-[10px] font-bold text-white/40 uppercase">Image Prompt</span>
+                                            <div className="bg-black/50 p-4 rounded-xl border border-white/10 h-full flex flex-col group/prompt hover:border-neon-blue/50 transition-colors shadow-inner">
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <span className="text-xxs font-bold text-neon-blue uppercase tracking-wider flex items-center">
+                                                        <Sparkles className="w-3 h-3 mr-1" /> AI PROMPT
+                                                    </span>
                                                     <button 
                                                         onClick={() => copyToClipboard(scene.image_prompt, i)}
-                                                        className="text-white/40 hover:text-white transition-colors"
+                                                        className={`text-xxs font-bold px-2 py-1 rounded flex items-center transition-all ${copiedPromptId === i ? 'bg-neon-green text-black' : 'bg-white/10 text-white hover:bg-neon-blue hover:text-black'}`}
                                                     >
-                                                        {copiedPromptId === i ? <Check className="w-4 h-4 text-neon-green" /> : <Copy className="w-4 h-4" />}
+                                                        {copiedPromptId === i ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+                                                        {copiedPromptId === i ? 'COPIED' : 'COPY'}
                                                     </button>
                                                 </div>
-                                                <p className="text-[10px] text-white/50 leading-relaxed line-clamp-4 flex-1 font-mono">
-                                                    {scene.image_prompt}
-                                                </p>
+                                                <div className="relative flex-1 bg-black/30 rounded-lg border border-white/5 p-2 group-hover/prompt:border-white/10 transition-colors">
+                                                    <p className="text-xxs text-white/60 leading-relaxed font-mono select-all h-full overflow-y-auto scrollbar-thin">
+                                                        {scene.image_prompt}
+                                                    </p>
+                                                </div>
+                                                <div className="mt-2 text-xxs text-white/30 text-center font-mono uppercase tracking-wide">
+                                                    Use in Studio Visual Module
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StoryProject, Scene, LanguageMode, AppView } from '../types';
 import { Card, Button, Badge } from './UIComponents';
-import { RefreshCw, Image as ImageIcon, ChevronLeft, ChevronRight, Save, Eye, ShieldCheck, CheckCircle, Languages, Mic, Music, PlayCircle, BookOpen, Volume2, Activity, Headphones, PauseCircle, Maximize2, PenTool, Lock, Library as LibraryIcon, Sparkles, Download, FileJson, X, AlertTriangle, Wand2 } from 'lucide-react';
+import { RefreshCw, Image as ImageIcon, ChevronLeft, ChevronRight, Save, Eye, ShieldCheck, CheckCircle, Languages, Mic, Music, PlayCircle, BookOpen, Volume2, Activity, Headphones, PauseCircle, Maximize2, PenTool, Lock, Library as LibraryIcon, Sparkles, Download, FileJson, X, AlertTriangle, Wand2, FileText } from 'lucide-react';
 import * as GeminiService from '../geminiService';
 import { PhotoCompositor } from './PhotoCompositor';
 
@@ -204,6 +204,52 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
       alert("บันทึกข้อมูลโปรเจกต์และส่งออกไฟล์ JSON เรียบร้อย (Encrypted & Exported)");
   };
 
+  const handleExportPDF = () => {
+      // Feature announcement
+      alert("Future Feature: Export to PDF\n\nในเวอร์ชันถัดไป ระบบจะรองรับการจัดหน้าและส่งออกเป็น E-book (PDF/ePub) ได้ทันที\n\n(Generating basic print view...)");
+      
+      // Basic Print functionality
+      const printContent = `
+        <html>
+          <head>
+            <title>${project.title}</title>
+            <style>
+              body { font-family: sans-serif; padding: 40px; color: #000; }
+              .scene { break-inside: avoid; page-break-inside: avoid; margin-bottom: 40px; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+              img { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; border: 1px solid #eee; }
+              h1 { text-align: center; color: #333; margin-bottom: 10px; }
+              p { font-size: 16px; line-height: 1.6; color: #333; margin-bottom: 10px; white-space: pre-wrap; }
+              .meta { text-align: center; color: #888; font-size: 12px; margin-bottom: 40px; }
+              .trans { color: #666; font-style: italic; }
+            </style>
+          </head>
+          <body>
+            <h1>${project.title}</h1>
+            <div class="meta">Created with StorySpark AI</div>
+            ${project.scenes.map((s, i) => `
+              <div class="scene">
+                <h3>Unit ${i + 1}</h3>
+                ${s.imageUrl ? `<img src="${s.imageUrl}" />` : ''}
+                <p>${s.content}</p>
+                ${s.contentTranslation ? `<p class="trans">${s.contentTranslation}</p>` : ''}
+              </div>
+            `).join('')}
+          </body>
+        </html>
+      `;
+      
+      const printWindow = window.open('', '', 'width=800,height=600');
+      if (printWindow) {
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+          printWindow.print();
+          printWindow.close();
+        }, 500);
+      }
+  };
+
   const handleDownloadImage = () => {
       if (!scene?.imageUrl) return;
       const downloadAnchorNode = document.createElement('a');
@@ -256,6 +302,9 @@ export const StudioEditor: React.FC<StudioProps> = ({ project, onUpdateProject, 
                 <span className="text-xs font-mono w-12 text-center text-white/70">{currentSceneIdx + 1}/{project.scenes.length}</span>
                 <Button variant="ghost" onClick={handleNext} disabled={currentSceneIdx === project.scenes.length - 1} className="p-2 h-8 w-8 rounded-md hover:bg-white/10"><ChevronRight className="w-4 h-4" /></Button>
              </div>
+             <Button variant="secondary" className="ml-2 text-sm py-2 px-4 border-white/20 text-white/70 hover:text-white" onClick={handleExportPDF}>
+                <FileText className="w-4 h-4 md:mr-2"/> <span className="hidden md:inline">PDF</span>
+             </Button>
              <Button variant="primary" className="ml-2 text-sm py-2 px-4 shadow-neon-blue" onClick={handleSaveProject}>
                 <Save className="w-4 h-4 md:mr-2"/> <span className="hidden md:inline">SAVE JSON</span>
              </Button>

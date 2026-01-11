@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Layout as LayoutIcon, PenTool, BookOpen, Lightbulb, Menu, History, Library as LibraryIcon, Flame, Zap, Shield, Heart, Users, Gamepad2, GraduationCap, Palette, ShieldCheck, ArrowRight, Sparkles, Lock, Book, Wand2 } from 'lucide-react';
+import { Layout as LayoutIcon, PenTool, BookOpen, Lightbulb, Menu, History, Library as LibraryIcon, Flame, Zap, Shield, Heart, Users, Gamepad2, GraduationCap, Palette, ShieldCheck, ArrowRight, Sparkles, Lock, Book, Wand2, X } from 'lucide-react';
 import { AppView, StoryProject, StoryMode, StoryBibleSeed, LanguageMode, TrendItem, FeatureRecommendation } from './types';
 import { StoryWizard } from './components/StoryWizard';
 import { StudioEditor } from './components/StudioEditor';
@@ -14,6 +14,41 @@ import { RECOMMENDATIONS } from './constants';
 import * as GeminiService from './geminiService';
 import { Badge, Button } from './components/UIComponents';
 
+// --- Extract NavButton Component ---
+interface NavButtonProps {
+  item: {
+      id: AppView;
+      icon: any;
+      label: string;
+      color: string;
+  };
+  isActive: boolean;
+  onClick: () => void;
+  isMobile?: boolean;
+}
+
+const NavButton: React.FC<NavButtonProps> = ({ item, isActive, onClick, isMobile = false }) => {
+    const isPink = item.color === 'pink';
+    
+    const activeClass = isPink 
+        ? 'bg-gradient-to-r from-neon-pink/20 to-transparent border-l-4 border-neon-pink text-white shadow-[0_0_15px_rgba(255,0,255,0.2)]'
+        : 'bg-gradient-to-r from-neon-blue/20 to-transparent border-l-4 border-neon-blue text-white shadow-[0_0_15px_rgba(0,243,255,0.2)]';
+    
+    const iconColor = isActive 
+        ? (isPink ? 'text-neon-pink' : 'text-neon-blue')
+        : (isPink ? 'group-hover:text-neon-pink' : 'group-hover:text-neon-blue');
+
+    return (
+        <button 
+            onClick={onClick} 
+            className={`w-full flex items-center p-3 rounded-xl transition-all duration-300 group ${isActive ? activeClass : 'text-white/50 hover:text-white hover:bg-white/5'}`}
+        >
+            <item.icon className={`w-5 h-5 ${isMobile ? 'mr-3' : 'lg:mr-3'} ${iconColor}`} />
+            <span className={`${isMobile ? 'inline' : 'hidden lg:inline'} font-cyber tracking-wide text-sm`}>{item.label}</span>
+        </button>
+    );
+};
+
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>(AppView.HOME);
   const [projects, setProjects] = useState<StoryProject[]>([]);
@@ -23,6 +58,7 @@ const App: React.FC = () => {
   const [trends, setTrends] = useState<TrendItem[]>([]);
   const [features, setFeatures] = useState<FeatureRecommendation[]>([]);
   const [wizardInitPrompt, setWizardInitPrompt] = useState<string>("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
       const initData = async () => {
@@ -121,6 +157,19 @@ const App: React.FC = () => {
       }
   };
 
+  const MAIN_NAV = [
+    { id: AppView.HOME, icon: LayoutIcon, label: 'Dashboard', color: 'blue' },
+    { id: AppView.LIBRARY, icon: LibraryIcon, label: 'Library', color: 'blue' },
+    { id: AppView.IDEA, icon: Lightbulb, label: 'Idea Lab', color: 'blue' }
+  ];
+
+  const WORKSTATION_NAV = [
+    { id: AppView.STUDIO, icon: PenTool, label: 'Holo-Studio', color: 'pink' },
+    { id: AppView.BIBLE, icon: BookOpen, label: 'Story Bible', color: 'pink' },
+    { id: AppView.MAGIC_EDITOR, icon: Wand2, label: 'Magic Editor', color: 'pink' },
+    { id: AppView.PROMPT_LAB, icon: History, label: 'Prompt Lab', color: 'pink' }
+  ];
+
   if (isProcessing) {
       return (
           <div className="h-screen w-screen flex flex-col items-center justify-center bg-[#050014] fixed top-0 left-0 z-50">
@@ -142,8 +191,58 @@ const App: React.FC = () => {
   return (
     <div className="flex h-screen w-screen overflow-hidden font-sans text-white">
       
-      {/* 3D Floating Sidebar */}
-      <aside className="w-20 lg:w-72 flex flex-col justify-between hidden md:flex flex-shrink-0 z-20 p-4">
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md md:hidden flex flex-col p-4 animate-fade-in">
+              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                 <h1 className="font-cyber font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-purple">
+                     STORY<span className="text-neon-pink">SPARK</span>
+                 </h1>
+                 <button onClick={() => setIsMobileMenuOpen(false)} className="bg-white/10 p-2 rounded-full hover:bg-white/20">
+                     <X className="text-white w-6 h-6" />
+                 </button>
+              </div>
+              
+              <nav className="space-y-2 overflow-y-auto flex-1">
+                  {MAIN_NAV.map(item => (
+                      <NavButton 
+                          key={item.id} 
+                          item={item} 
+                          isActive={view === item.id}
+                          onClick={() => { setView(item.id); setIsMobileMenuOpen(false); }}
+                          isMobile={true} 
+                      />
+                  ))}
+                  
+                  <div className="pt-6 pb-2">
+                     <p className="px-3 text-xxs font-bold text-neon-purple/80 uppercase tracking-[0.2em] border-b border-white/10 pb-2">Workstation</p>
+                  </div>
+                  
+                  {WORKSTATION_NAV.map(item => (
+                      <NavButton 
+                          key={item.id} 
+                          item={item} 
+                          isActive={view === item.id}
+                          onClick={() => { setView(item.id); setIsMobileMenuOpen(false); }}
+                          isMobile={true} 
+                      />
+                  ))}
+                  
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                      <button 
+                         onClick={() => { setView(AppView.GUIDE); setIsMobileMenuOpen(false); }}
+                         className={`w-full flex items-center p-3 rounded-xl transition-all duration-300 group ${view === AppView.GUIDE ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white hover:bg-white/5'}`}
+                      >
+                          <Book className="w-5 h-5 mr-3" />
+                          <span className="font-cyber tracking-wide text-sm">MANUAL / GUIDE</span>
+                      </button>
+                  </div>
+              </nav>
+          </div>
+      )}
+
+      {/* Desktop Sidebar */}
+      <aside className="w-20 lg:w-72 flex flex-col justify-between hidden md:flex flex-shrink-0 z-20 p-4 transition-all duration-300">
          <div className="glass-panel h-full rounded-2xl flex flex-col p-4 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
              <div className="px-2 py-4 mb-4">
                  <h1 
@@ -152,41 +251,32 @@ const App: React.FC = () => {
                  >
                      STORY<br/><span className="text-neon-pink">SPARK</span>
                  </h1>
+                 <div className="lg:hidden flex justify-center">
+                    <span className="font-cyber font-black text-2xl text-neon-blue">S<span className="text-neon-pink">S</span></span>
+                 </div>
              </div>
              <nav className="space-y-3 flex-1">
-                 {[
-                   { id: AppView.HOME, icon: LayoutIcon, label: 'Dashboard' },
-                   { id: AppView.LIBRARY, icon: LibraryIcon, label: 'Library' },
-                   { id: AppView.IDEA, icon: Lightbulb, label: 'Idea Lab' } // Added Idea Lab
-                 ].map(item => (
-                   <button 
-                    key={item.id}
-                    onClick={() => setView(item.id)} 
-                    className={`w-full flex items-center p-3 rounded-xl transition-all duration-300 group ${view === item.id ? 'bg-gradient-to-r from-neon-blue/20 to-transparent border-l-4 border-neon-blue text-white shadow-[0_0_15px_rgba(0,243,255,0.2)]' : 'text-white/50 hover:text-white hover:bg-white/5'}`}
-                   >
-                       <item.icon className={`w-5 h-5 lg:mr-3 ${view === item.id ? 'text-neon-blue' : 'group-hover:text-neon-blue'}`} />
-                       <span className="hidden lg:inline font-cyber tracking-wide text-sm">{item.label}</span>
-                   </button>
+                 {MAIN_NAV.map(item => (
+                      <NavButton 
+                          key={item.id} 
+                          item={item} 
+                          isActive={view === item.id}
+                          onClick={() => setView(item.id)}
+                      />
                  ))}
                  
                  <div className="pt-6 pb-2">
-                    <p className="px-3 text-[10px] font-bold text-neon-purple/80 uppercase tracking-[0.2em] hidden lg:block border-b border-white/10 pb-2">Workstation</p>
+                    <p className="px-3 text-xxs font-bold text-neon-purple/80 uppercase tracking-[0.2em] hidden lg:block border-b border-white/10 pb-2">Workstation</p>
+                    <div className="lg:hidden h-px bg-white/10 my-2"></div>
                  </div>
 
-                 {[
-                   { id: AppView.STUDIO, icon: PenTool, label: 'Holo-Studio' },
-                   { id: AppView.BIBLE, icon: BookOpen, label: 'Story Bible' },
-                   { id: AppView.MAGIC_EDITOR, icon: Wand2, label: 'Magic Editor' },
-                   { id: AppView.PROMPT_LAB, icon: History, label: 'Prompt Lab' }
-                 ].map(item => (
-                   <button 
-                    key={item.id}
-                    onClick={() => setView(item.id)} 
-                    className={`w-full flex items-center p-3 rounded-xl transition-all duration-300 group ${view === item.id ? 'bg-gradient-to-r from-neon-pink/20 to-transparent border-l-4 border-neon-pink text-white shadow-[0_0_15px_rgba(255,0,255,0.2)]' : 'text-white/50 hover:text-white hover:bg-white/5'}`}
-                   >
-                       <item.icon className={`w-5 h-5 lg:mr-3 ${view === item.id ? 'text-neon-pink' : 'group-hover:text-neon-pink'}`} />
-                       <span className="hidden lg:inline font-cyber tracking-wide text-sm">{item.label}</span>
-                   </button>
+                 {WORKSTATION_NAV.map(item => (
+                      <NavButton 
+                          key={item.id} 
+                          item={item} 
+                          isActive={view === item.id}
+                          onClick={() => setView(item.id)}
+                      />
                  ))}
              </nav>
              
@@ -218,19 +308,19 @@ const App: React.FC = () => {
           
           <header className="md:hidden h-16 glass-panel border-b-0 border-white/10 flex items-center px-4 justify-between flex-shrink-0 m-4 rounded-2xl">
               <span className="font-cyber font-bold text-xl text-neon-blue">STORY<span className="text-neon-pink">SPARK</span></span>
-              <button onClick={() => setView(AppView.HOME)}><Menu className="text-white" /></button>
+              <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 hover:bg-white/10 rounded-lg transition-colors"><Menu className="text-white w-6 h-6" /></button>
           </header>
 
           <div className="flex-1 overflow-auto scroll-smooth">
             {view === AppView.HOME && (
-                <div className="p-8 max-w-6xl mx-auto">
+                <div className="p-4 md:p-8 max-w-6xl mx-auto">
                     <div className="text-center mb-16 relative">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-neon-blue/20 blur-[100px] rounded-full pointer-events-none"></div>
-                        <h2 className="text-5xl lg:text-6xl font-cyber font-black text-white mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)] leading-tight">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[500px] h-[300px] bg-neon-blue/20 blur-[100px] rounded-full pointer-events-none"></div>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-cyber font-black text-white mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)] leading-tight">
                             UNLEASH YOUR<br/>
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-pink">DIGITAL IMAGINATION</span>
                         </h2>
-                        <p className="text-lg text-blue-200/70 max-w-2xl mx-auto font-light mb-8">
+                        <p className="text-base md:text-lg text-blue-200/70 max-w-2xl mx-auto font-light mb-8">
                             Craft professional narratives, comics, and visual novels using our advanced AI neural engine.
                         </p>
 
@@ -252,7 +342,7 @@ const App: React.FC = () => {
                                 <Flame className="w-6 h-6 text-neon-yellow mr-3 drop-shadow-[0_0_10px_rgba(252,238,10,0.8)]" /> 
                                 TRENDING SIGNALS
                             </h3>
-                            <div className="grid md:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {trends.map((trend) => (
                                     <div key={trend.rank} className="glass-panel p-6 rounded-2xl group hover:border-neon-yellow/50 transition-all hover:-translate-y-2 duration-500">
                                         <div className="flex justify-between items-start mb-4">
@@ -261,7 +351,7 @@ const App: React.FC = () => {
                                             </div>
                                             <div className="flex gap-1">
                                                 {trend.recommended_for_age.map(age => (
-                                                    <span key={age} className="text-[10px] bg-white/5 px-2 py-0.5 rounded text-white/50 border border-white/10">{age}</span>
+                                                    <span key={age} className="text-xxs bg-white/5 px-2 py-0.5 rounded text-white/50 border border-white/10">{age}</span>
                                                 ))}
                                             </div>
                                         </div>
@@ -287,7 +377,7 @@ const App: React.FC = () => {
                                 <Zap className="w-6 h-6 text-neon-purple mr-3 drop-shadow-[0_0_10px_rgba(188,19,254,0.8)]" /> 
                                 STRATEGIC UPGRADES
                             </h3>
-                            <div className="grid md:grid-cols-2 gap-6 pb-10">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-10">
                                 {features.map((rec, i) => (
                                     <div key={i} className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-white/30 transition-all">
                                         <div className="absolute top-0 right-0 p-4 opacity-50">
@@ -299,7 +389,7 @@ const App: React.FC = () => {
                                         <div className="flex items-start mb-4">
                                             <div>
                                                 <h4 className="font-bold text-lg text-white mb-2 group-hover:text-neon-blue transition-colors">{rec.name}</h4>
-                                                <span className={`text-[10px] font-cyber font-bold uppercase tracking-wider px-2 py-1 rounded border ${getCategoryColor(rec.category)}`}>
+                                                <span className={`text-xxs font-cyber font-bold uppercase tracking-wider px-2 py-1 rounded border ${getCategoryColor(rec.category)}`}>
                                                     {rec.category}
                                                 </span>
                                             </div>

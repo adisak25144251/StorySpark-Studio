@@ -9,20 +9,39 @@ const getClient = () => {
   return new GoogleGenAI({ apiKey });
 };
 
-// --- HELPER: JSON Parser that handles Markdown blocks ---
+// --- HELPER: JSON Parser that handles Markdown blocks and Trailing Garbage ---
 const cleanAndParseJSON = (text: string, defaultVal: any = {}) => {
     if (!text) return defaultVal;
     try {
         // 1. Remove markdown code blocks (```json ... ```)
         let clean = text.replace(/```json\s*|```/g, '');
         
-        // 2. Find the first '{' and last '}' to extract the JSON object
-        // This handles cases where the model puts text before or after the JSON
+        // 2. Find the first '{'
         const firstBrace = clean.indexOf('{');
-        const lastBrace = clean.lastIndexOf('}');
         
-        if (firstBrace >= 0 && lastBrace >= 0 && lastBrace > firstBrace) {
+        if (firstBrace === -1) return defaultVal;
+
+        // 3. Find the MATCHING closing brace using a stack counter
+        let depth = 0;
+        let lastBrace = -1;
+        
+        for (let i = firstBrace; i < clean.length; i++) {
+            if (clean[i] === '{') depth++;
+            else if (clean[i] === '}') {
+                depth--;
+                if (depth === 0) {
+                    lastBrace = i;
+                    break;
+                }
+            }
+        }
+        
+        if (lastBrace > firstBrace) {
             clean = clean.substring(firstBrace, lastBrace + 1);
+        } else {
+             // Fallback to greedy approach if matching fails (e.g. malformed JSON)
+            const greedyLast = clean.lastIndexOf('}');
+            if (greedyLast > firstBrace) clean = clean.substring(firstBrace, greedyLast + 1);
         }
 
         return JSON.parse(clean);
