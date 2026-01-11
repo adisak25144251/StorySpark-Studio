@@ -1,0 +1,8 @@
+﻿/* StorySpark Studio - base styles */
+:root { color-scheme: dark; }
+html, body { height: 100%; }
+body { margin: 0; font-family: Nunito, Kanit, system-ui, sans-serif; }
+#root { min-height: 100vh; }
+
+/* Optional: smooth text */
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
